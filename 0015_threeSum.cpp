@@ -6,36 +6,35 @@ using namespace std;
 class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums)    {          
-        int n = nums.size();        // size of array
-        
-        if (n < 3)  return {};    // Base Case 1
+        int n = nums.size();
+        if (n < 3) return {};               //Base case 1
 
-        sort(nums.begin(), nums.end());  // Sorting of array
-
-        if (nums[0] > 0)    return {};   // Base Case 2
-        
-        unordered_map<int, int> hashMap;
-        for (int i = 0; i < n; i++)    {
-            hashMap[nums[i]] = i;        // Hashing of indices
-        }
-
+        sort(nums.begin(), nums.end());     // Sorted Array
+        if (nums[0] > 0)  return {};        //Base case 2
         vector<vector<int>> triples;
-        
-        for (int i = 0; i < n - 2; i++)    {   //Fixing 1st number to tranverse the array
 
-            if (nums[i] > 0)    break;      // if fixed number is +ve, stop it since leading elements would ony increase the sum and we cannot acheive 0(target).(only if target==0)
-            if(i > 0 && nums[i]==nums[i-1] ) continue;      //// Continue to next iteration if 1st fixed number is same as previous to avoid dulicates. 
-           
-                for (int j = i + 1; j < n - 1; j++)    {   //Fixing 2nd number
-
-                    if(j > i+1 && nums[j]==nums[j-1] ) continue;   // Continue to next iteration if 2nd  fixed number is same as previous to avoid dulicates. 
-                    int complement = -1 * (nums[i] + nums[j]);     //complement = target - nums[i]-nums[j]
-
-                    if (hashMap.count(complement) && hashMap[complement] > j)
-                            triples.push_back({nums[i], nums[j], complement});      //If it exists in hashmap and its last occurrence index > 2nd fixed index, we found our triplet.                          
+        for (int i = 0; i < n - 2; i++) {
+            if (nums[i] > 0) break;      // As target is 0,so positive numbers can't become zero by adding more positive numbers.
+            if (i > 0 && nums[i] == nums[i - 1]) continue;   // If 1st fixed number is equal to previous one,then continue to avoid duplicates.
+            int start = i+1,end = n-1;
+            while(start<end)    {      // Two pointers Approach
+                int sum = nums[i]+nums[start]+nums[end];
+                if(sum==0)  {                           // target is 0 in this case.
+                    triples.push_back({nums[i],nums[start],nums[end]});
+                    start++;
+                    end--;
+                    while( start<end && nums[start]==nums[start-1]) start++;  //Updating start until last occurence of nums[start] to avoid duplicates.
+                    while( start<end && nums[end]==nums[end+1]) end--;        //Updating end until last occurence of nums[end] to avoid duplicates.
 
                 }
+                else if(sum>0)
+                    end--;
+                else
+                    start++;
+            }
+                    
         }
+        
         return triples;
     }       
     
