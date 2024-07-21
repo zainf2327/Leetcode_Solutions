@@ -1,41 +1,33 @@
 #include <iostream>
 #include <vector>
 #include<algorithm>
-#include <unordered_map>
+#include <unordered_set>
 using namespace std;
 class Solution {
 public:
-    vector<vector<int>> threeSum(vector<int>& nums)    {          
+    vector<vector<int>> threeSum(vector<int>& nums) {
         int n = nums.size();
-        if (n < 3) return {};               //Base case 1
-
-        sort(nums.begin(), nums.end());     // Sorted Array
-        if (nums[0] > 0)  return {};        //Base case 2
+        if (n < 3)  return {};          // Base case 1
+        sort(nums.begin(), nums.end());
+        if(nums [0]> 0 ) return {};     // Base case 2
+        unordered_set<int> s;           // HashSet for storing the elements of array.
         vector<vector<int>> triples;
 
-        for (int i = 0; i < n - 2; i++) {
-            if (nums[i] > 0) break;      // As target is 0,so positive numbers can't become zero by adding more positive numbers.
-            if (i > 0 && nums[i] == nums[i - 1]) continue;   // If 1st fixed number is equal to previous one,then continue to avoid duplicates.
-            int start = i+1,end = n-1;
-            while(start<end)    {      // Two pointers Approach
-                int sum = nums[i]+nums[start]+nums[end];
-                if(sum==0)  {                           // target is 0 in this case.
-                    triples.push_back({nums[i],nums[start],nums[end]});
-                    start++;
-                    end--;
-                    while( start<end && nums[start]==nums[start-1]) start++;  //Updating start until last occurence of nums[start] to avoid duplicates.
-                    while( start<end && nums[end]==nums[end+1]) end--;        //Updating end until last occurence of nums[end] to avoid duplicates.
+        for (int i = 0; i < n - 1; i++) {
+            
+            if (i > 0 && nums[i] == nums[i - 1])    continue;   //avoid duplicates
 
+            for (int j = i + 1; j < n; j++) { 
+
+                int complement = -1*(nums[i] + nums[j]);
+                if (triples.empty() || nums[j] != triples.back()[2] || nums[i] != triples.back()[0]) {   // Avoid Duplicates condition
+                    if (s.count(complement))
+                        triples.push_back({nums[i], complement, nums[j]});
                 }
-                else if(sum>0)
-                    end--;
-                else
-                    start++;
+                s.insert(nums[j]);     
             }
-                    
+            s.clear();   //Emptied HashSet
         }
-        
         return triples;
-    }       
-    
+    }
 };
