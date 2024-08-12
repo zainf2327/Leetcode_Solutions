@@ -16,6 +16,6 @@ int removeElement(vector<int>& nums, int val) {
             }
         }
 
-        return start;
+        return start;  //end+1
     }
 };
