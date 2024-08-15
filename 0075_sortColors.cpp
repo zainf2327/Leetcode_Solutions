@@ -5,35 +5,26 @@ class Solution {
 public:
     void sortColors(vector<int>& nums) {
 
-                            // Quick Sort partitions(Two pass)
+                            // Quick Sort Partitions(Three Partitions)(One Pass)
         
-        int r = nums.size()-1;
+       int r = nums.size() - 1;
         int l = 0;
-       while(l<=r)  {
-          if(nums[l]==2)    {
-            swap(nums[l],nums[r]);
-            r--;
-          }
-          else{
-            l++;
-          }
-       }
-              // l is size of left partition of having 0 and 1
-             //  n-l is size of right partition having only 2
-            r=l-1;
-            l = 0;
-            while(l<=r)  {
-            if(nums[l]==1)    {
-                swap(nums[l],nums[r]);
+        int m = 0;
+        while (m <= r) {
+            if (nums[m] == 0) {
+                swap(nums[l], nums[m]);
+                l++;
+                m++;
+            } else if (nums[m] == 1) {
+                m++;
+            } else {
+                swap(nums[m], nums[r]);
                 r--;
-          }
-          else{
-            l++;
-          }
-       }
-            // l is size of left partition of having ony zeros
-             // l(old)-l(new) is size of right partition having only ones
-        
+            }
+        }
+                // l is size of left partition having only zeros.
+                // m-l is size of middle partition having only ones.
+                // nums.size() - m is size of right partition having only ones.  
     }
 
 };
