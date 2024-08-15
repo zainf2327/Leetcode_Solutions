@@ -4,27 +4,29 @@ using namespace std;
 class Solution {
 public:
     void sortColors(vector<int>& nums) {
-        // Counting Sort(Two pass)
-        int zeros = 0;
-        int ones = 0;
+
+                            // Quick Sort partitions(Two pass)
+        
         int n = nums.size();
-        for (int i = 0; i < n; i++) {
-            if (nums[i] == 0)
-                zeros++;
-            else if (nums[i] == 1)
-                ones++;
-        }
-        for (int i = 0; i < n; i++) {
-            if (zeros) {
-                nums[i] = 0;
-                zeros--;
-            } else if (ones) {
-                nums[i] = 1;
-                ones--;
-            } else {
-                nums[i] = 2;
+        int l = 0;
+        for (int r = 0; r < n; r++) {
+            if (nums[r] != 2) {
+                swap(nums[l], nums[r]);
+                l++;
             }
-        }
+        }    // l is size of left partition of having 0 and 1
+             // n-l is size of right partition having only 2
+            n = l;
+            l = 0;
+            for (int r = 0; r < n; r++) {
+                if (nums[r] != 1) {
+                    swap(nums[l], nums[r]);
+                    l++;
+                }
+            }
+            // l is size of left partition of having ony zeros
+             // n-l is size of right partition having only ones
+        
     }
 
 };
