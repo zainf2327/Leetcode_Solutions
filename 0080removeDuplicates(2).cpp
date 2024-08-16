@@ -7,16 +7,9 @@ public:
         int n = nums.size();
         int l = 0;
         for (int r = 0; r < n; r++) {
-            int count = 1;
-            while ((r + 1) < n && nums[r + 1] == nums[r]) {
-                count++;
-                r++;
-            }
-            count = min(count, 2);
-            while (count) {
-                nums[l] = nums[r];
+            if (r == 0 || r == 1 || nums[r] != nums[l - 2]) {
+                nums[l] = nums[r];  // swap(nums[l],nums[r]);
                 l++;
-                count--;
             }
         }
         return l;
