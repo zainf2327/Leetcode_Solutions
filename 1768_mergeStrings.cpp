@@ -5,17 +5,17 @@ public:
     string mergeAlternately(string word1, string word2) {
         int m = word1.size();
         int n = word2.size();
-        int ptr1 = 0, ptr2 = 0;
-        string word(m + n, '0');
-        int ptr = 0;
-        while (ptr1 < m || ptr2 < n) {
-            if (ptr1 < m) {
-                word[ptr++] = word1[ptr1++];
+        string result = "";
+
+        for (int i = 0; i < max(m, n); i++) {
+            if (i < m) {
+                result.push_back(word1[i]);
             }
-            if (ptr2 < n) {
-                word[ptr++] = word2[ptr2++];
+            if (i < n) {
+                result.push_back(word2[i]);
             }
         }
-        return word;
+
+        return result;
     }
 };
