@@ -5,10 +5,11 @@ class Solution {
 public:
     vector<int> runningSum(vector<int>& nums) {
         int n =nums.size();
+        int runningSum=0;
         vector<int> ans(n);
-         ans[0] = nums[0];
-        for(int i=1;i<n;i++)  {
-            ans[i] = nums[i]+ans[i-1];
+        for(int i=0;i<n;i++){
+            runningSum+=nums[i];
+            ans[i]=runningSum;
         }
         return ans;
     }
