@@ -1,20 +1,21 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <algorithm>
+#include <set>
 using namespace std;
 class Solution {
 public:
     int numUniqueEmails(vector<string>& emails) {
         string mail;
-        int i, n;
+        int i;
+        set<string> mp;
         for (string& email : emails) {
-            i = 0;
-            mail = "";
-            n = email.size();
+             i = 0;
+             mail="";
+            int n = email.size();
             while (email[i] != '@') {
                 if (email[i] == '+') {
-                    while (email[i] != '@') {
+                    while(email[i]!='@')  {
                         i++;
                     }
                     break;
@@ -26,26 +27,13 @@ public:
                 mail.push_back(email[i]);
                 i++;
             }
-            while (i < n) {
+            while(i<n)  {
                 mail.push_back(email[i]);
                 i++;
             }
-
-            email = mail;
+            
+            mp.insert(mail);
         }
-        int count = 0;
-        for (int i = 0; i < emails.size(); i++) {
-            bool is_unique = true;
-            for (int j = 0; j < i; j++) {
-                if (emails[j] == emails[i]) {
-                    is_unique = false;
-                    break;
-                }
-            }
-            if (is_unique) {
-                count++;
-            }
-        }
-        return count;
+        return mp.size();
     }
 };
