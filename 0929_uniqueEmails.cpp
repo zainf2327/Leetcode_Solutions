@@ -33,10 +33,16 @@ public:
 
             email = mail;
         }
-        sort(emails.begin(), emails.end());
-        int count = 1;
-        for (int i = 1; i < emails.size(); i++) {
-            if (emails[i] != emails[i - 1]) {
+        int count = 0;
+        for (int i = 0; i < emails.size(); i++) {
+            bool is_unique = true;
+            for (int j = 0; j < i; j++) {
+                if (emails[j] == emails[i]) {
+                    is_unique = false;
+                    break;
+                }
+            }
+            if (is_unique) {
                 count++;
             }
         }
