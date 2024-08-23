@@ -3,12 +3,12 @@ using namespace std;
 class Solution {
 public:
     int numberOfChild(int n, int time) {
-        int fullRotations = time / (n - 1);
-        int extraSteps = time % (n - 1);
-        if (fullRotations % 2 == 0) {
-            return extraSteps;
+        int N = 2*n -2;
+        int T = time % N;
+        if (T<n) {
+            return T;
         } else {
-            return n - 1 - extraSteps;
+            return N-T;
         }
     }
 };
