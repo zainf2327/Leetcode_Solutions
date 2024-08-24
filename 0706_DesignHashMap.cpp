@@ -1,5 +1,5 @@
 #include <iostream>
-#include<vector>
+#include <vector>
 using namespace std;
 class MyHashMap {
 private:
@@ -8,36 +8,37 @@ private:
         int key;
         int value;
         Node* next;
-        Node(int key, int value, Node* next = nullptr) : key(key), value(value), next(next) {}
+        Node(int key, int value, Node* next = nullptr)
+            : key(key), value(value), next(next) {}
         ~Node() {}
     };
-    const int SIZE = 1000;
+    const int SIZE = 1007;
     vector<Node*> list;
+
 public:
-    MyHashMap()  {
-        list.resize(SIZE,nullptr);
+    MyHashMap() {
+        list.resize(SIZE);
+        for (auto& header : list) {
+            header = new Node(-1, -1);
+        }
     }
 
     void put(int K, int V) {
         int index = K % SIZE;
-        if (list[index] == nullptr) {
-            list[index] = new Node(K, V);
-        } else {
-            Node* current = list[index];
-            while (current->next != nullptr && current->key != K) {
-                current = current->next;
+        Node* current = list[index];
+        while (current->next) {
+            if (current->next->key == K) {
+                current->next->value = V;
+                return;
             }
-            if (current->key == K) {
-                current->value = V; // Update value if key exists
-            } else {
-                current->next = new Node(K, V);
-            }
+            current = current->next;
         }
+        current->next = new Node(K, V);
     }
 
     int get(int K) {
         int index = K % SIZE;
-        Node* ptr = list[index];
+        Node* ptr = list[index]->next; // head of linked list
         while (ptr) {
             if (ptr->key == K) {
                 return ptr->value;
@@ -49,30 +50,33 @@ public:
 
     void remove(int K) {
         int index = K % SIZE;
-        Node*current =list[index];
-        if (current == nullptr) {
-    
-        } else if (current->key == K) {
-            list[index] = current->next;
-            delete current;    
-        } else {
-            while(current->next!=nullptr && current->next->key!=K)  {
-                current=current->next;
-            }
-            if(current->next!=nullptr)  {
-                Node*temp=current->next;
-                current->next=current->next->next;
+        Node* current = list[index];
+        while (current->next) {
+            if (current->next->key == K) {
+                Node* temp = current->next;
+                current->next = current->next->next;
                 delete temp;
+                return;
             }
+            current = current->next;
         }
     }
-    ~MyHashMap()    {
-        for(auto& head: list)   {
-            while(head!=nullptr)    {
-                Node* temp=head;
-                head=head->next;
+    ~MyHashMap() {
+        Node* temp;
+        for (auto& header : list) {
+            while (header) {
+                temp = header;
+                header = header->next;
                 delete temp;
             }
         }
     }
 };
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap* obj = new MyHashMap();
+ * obj->put(key,value);
+ * int param_2 = obj->get(key);
+ * obj->remove(key);
+ */
