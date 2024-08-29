@@ -3,14 +3,11 @@
 using namespace std;
 class Solution {
 private:
-    bool ispalindrome(string& s, int l, int r, int deleted, int maxDeletion) {
-        if (deleted > maxDeletion)
-            return false;
+    bool isPalindrome(string& s, int l, int r) {
         while (l < r) {
-            if (s[l] != s[r]) {
-                return ispalindrome(s, l + 1, r, deleted + 1, maxDeletion) ||
-                       ispalindrome(s, l, r - 1, deleted + 1, maxDeletion);
-            }
+            if (s[l] != s[r])
+               return false;
+            
             l++;
             r--;
         }
@@ -19,6 +16,14 @@ private:
 
 public:
     bool validPalindrome(string s) {
-        return ispalindrome(s, 0, s.size() - 1, 0, 1);
+        int l =0;
+        int r = s.size()-1;
+         while (l < r) {
+            if (s[l] != s[r]) 
+               return isPalindrome(s,l+1,r)|| isPalindrome(s,l,r-1) ;
+            l++;
+            r--;
+        }
+        return true;
     }
 };
