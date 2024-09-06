@@ -12,21 +12,18 @@ public:
             prime[i] = true;
         }
         prime[2] = true;
+        int count = n / 2;
         for (int i = 3; i * i < n; i += 2) {
             if (prime[i]) {
                 for (int j = i * i; j < n; j += 2 * i) {
-                    prime[j] = false;
+                    if (prime[j]) {
+                        prime[j] = false;
+                        count--;
+                    }
                 }
-            }
-        }
-        int count = 0;
-        for (int i = 2; i < n; i++) {
-            if (prime[i]) {
-                count++;
             }
         }
 
         return count;
     }
 };
- 
