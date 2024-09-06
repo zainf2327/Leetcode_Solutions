@@ -5,41 +5,40 @@ using namespace std;
 class Solution {
 public:
     vector<int> majorityElement(vector<int>& nums) {
-       int candidate1 = 0, candidate2 = 0;
-        int count1 = 0, count2 = 0;
+        unordered_map<int, int> map;
         int n = nums.size();
         for (int i = 0; i < n; i++) {
-            if (count1 == 0 && nums[i] != candidate2) {
-                candidate1 = nums[i];
-                count1++;
-            } else if (count2 == 0 && nums[i] != candidate1) {
-                candidate2 = nums[i];
-                count2++;
-            } else if (candidate1 == nums[i]) {
-                count1++;
-            } else if (candidate2 == nums[i]) {
-                count2++;
+            if (map.size() < 2) {
+                map[nums[i]]++;
+            } else if (map.count(nums[i])) {
+                map[nums[i]]++;
             } else {
-                count1--;
-                count2--;
+                unordered_map<int, int> temp;
+                for (auto& pair : map) {
+                    pair.second--;
+                    if (pair.second > 0) {
+                        temp.insert({pair.first, pair.second});
+                    }
+                }
+                map = temp;
             }
         }
         vector<int> ans;
         int threshold = n / 3;
-        count1 = 0, count2 = 0;
+        for (auto& pair : map) {
+            pair.second = 0;
+        }
         for (int i = 0; i < n; i++) {
-            if (nums[i] == candidate1) {
-                count1++;
-            } else if (nums[i] == candidate2) {
-                count2++;
+            if (map.count(nums[i])) {
+                map[nums[i]]++;
             }
         }
-        if (count1 > threshold) {
-            ans.push_back(candidate1);
+        for (auto& pair : map) {
+            if (pair.second > threshold) {
+                ans.push_back(pair.first);
+            }
         }
-        if (count2 > threshold) {
-            ans.push_back(candidate2);
-        }
+
         return ans;
     }
 };
