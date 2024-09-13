@@ -8,9 +8,15 @@ public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
         unordered_map<string, vector<string>> map;
         for (string& str : strs) {
-            string x = str;
-            sort(x.begin(), x.end());
-            map[x].push_back(str);
+            int count[26] = {0};
+            for (char c : str) {
+                count[c - 'a']++;
+            }
+            string key = "";
+            for (int c : count) {
+                key = key + to_string(c) + "#";
+            }
+            map[key].push_back(str);
         }
         vector<vector<string>> res;
         for (auto& pair : map) {
