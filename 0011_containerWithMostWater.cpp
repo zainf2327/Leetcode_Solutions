@@ -5,14 +5,15 @@ using namespace std;
 class Solution {
 public:
     int maxArea(vector<int>& height) {
-        int n = height.size();
+        int l = 0, r = height.size() - 1;
         int maxArea = 0;
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = i + 1; j < n; j++) {
-                int width = j - i;
-                int altitude = min(height[j], height[i]);
-                int area = width * altitude;
-                maxArea = max(maxArea, area);
+        while (l < r) {
+            int area = (r - l) * min(height[l], height[r]);
+            maxArea = max(maxArea, area);
+            if (height[l] < height[r]) {
+                l++;
+            } else {
+                r--;
             }
         }
         return maxArea;
