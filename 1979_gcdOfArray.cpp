@@ -5,13 +5,16 @@ using namespace std;
 class Solution {
 public:
     int findGCD(vector<int>& nums) {
-        int max = *max_element(nums.begin(), nums.end());
-        int min = *min_element(nums.begin(), nums.end());
-        for (int i = min; i > 1; i--) {
-            if (min % i == 0 && max % i == 0) {
-                return i;
-            }
+        int maxNumber = nums[0], minNumber = nums[0];
+        for (int num : nums) {
+            maxNumber = max(maxNumber, num);
+            minNumber = min(minNumber, num);
         }
-        return 1;
+        while (minNumber != 0) {
+            int temp = minNumber;
+            minNumber = maxNumber % minNumber;
+            maxNumber = temp;
+        }
+        return maxNumber;
     }
 };
