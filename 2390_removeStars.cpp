@@ -4,17 +4,14 @@ using namespace std;
 class Solution {
 public:
     string removeStars(string s) {
-        int n = s.size();
-        int l = 0;
-        for (int r = 0; r < n; r++) {
-            if (s[r] == '*') {
-                l--;
+        string Stack;
+        for (char c : s) {
+            if (c == '*') {
+                Stack.pop_back();
             } else {
-                s[l] = s[r];
-                l++;
+                Stack.push_back(c);
             }
         }
-        s.resize(l);
-        return s;
+        return Stack;
     }
 };
