@@ -1,29 +1,28 @@
 #include <unordered_map>
 #include <vector>
-#include <queue>
-#include <functional>  // if you need std::greater or std::less
 using namespace std;
-
 class Solution {
 public:
     vector<int> topKFrequent(vector<int>& nums, int k) {
         unordered_map<int, int> count;
-        for (int num : nums) {
-            count[num]++;
+         for (int n : nums) {
+            count[n]++;
         }
 
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> heap;
-        for (auto& entry : count) {
-            heap.push({entry.second, entry.first});
-            if (heap.size() > k) {
-                heap.pop();
-            }
+       
+        vector<vector<int>> freq(nums.size() + 1);
+        for (const auto& entry : count) {
+            freq[entry.second].push_back(entry.first);
         }
 
         vector<int> res;
-        for (int i = 0; i < k; i++) {
-            res.push_back(heap.top().second);
-            heap.pop();
+        for (int i = freq.size() - 1; i > 0; --i) {
+            for (int n : freq[i]) {
+                res.push_back(n);
+                if (res.size() == k) {
+                    return res;
+                }
+            }
         }
         return res;
     }
