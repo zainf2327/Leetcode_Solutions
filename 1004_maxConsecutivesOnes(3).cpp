@@ -10,13 +10,14 @@ public:
             if (nums[r] == 0)
                 zeros++;
 
-            while (zeros > k) {
+            if (zeros > k) {
                 if (nums[l] == 0)
                     zeros--;
                 l++;
             }
-
-            maxLen = max(maxLen, r - l + 1);
+            if (zeros <= k) {
+                maxLen = max(maxLen, r - l + 1);
+            }
         }
 
         return maxLen;
