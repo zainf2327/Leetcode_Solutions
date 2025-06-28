@@ -1,19 +1,22 @@
-# include <unordered_set>
+# include <unordered_map>
 # include <vector>
 using namespace std;
 class Solution {
 public:
     int totalFruit(vector<int>& fruits) {
-        int maxLen = 0;
-        for (int i = 0; i < fruits.size(); i++) {
-            unordered_set<int> seen;
-            int j;
-            for (j = i; j < fruits.size(); j++) {
-                seen.insert(fruits[j]);
-                if (seen.size() > 2)
-                    break;
+        int maxLen = 0, l = 0;
+        unordered_map<int, int> seen;
+        for (int r = 0; r < fruits.size(); r++) {
+            seen[fruits[r]]++;
+            if (seen.size() > 2) {
+                seen[fruits[l]]--;
+                if (seen[fruits[l]] == 0)
+                    seen.erase(fruits[l]);
+                l++;
             }
-            maxLen = max(--j - i + 1, maxLen);
+            if (seen.size() <= 2) {
+                maxLen = max(r - l + 1, maxLen);
+            }
         }
         return maxLen;
     }
