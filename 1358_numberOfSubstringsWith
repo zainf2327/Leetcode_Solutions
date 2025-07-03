@@ -3,19 +3,17 @@ using namespace std;
 
 class Solution {
 public:
-    int numberOfSubstrings(string s) {
+   int numberOfSubstrings(string s) {
         int count = 0, n = s.size();
-        for (int i = 0; i < n; i++) {
-            int hash[3] = {
-                0}; // reset character frequency for each starting index
-            for (int j = i; j < n; j++) {
-                hash[s[j] - 'a']++; // update frequency
-                if (hash[0] && hash[1] &&
-                    hash[2]) {        // if all a, b, c are present
-                    count += (n - j); // all substrings from s[i..j] to
-                                      // s[i..n-1] are valid
-                    break;
-                }
+        int hash[3] = {0};
+        int l = 0;
+        for (int r = 0; r < n; r++) {
+            hash[s[r] - 'a']++;
+
+            while (hash[0] && hash[1] && hash[2]) {
+                count = count + (n - r) ;
+                hash[s[l] - 'a']--;
+                l++;
             }
         }
         return count;
