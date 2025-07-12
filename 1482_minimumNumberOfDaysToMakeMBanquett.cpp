@@ -1,45 +1,40 @@
 #include <vector>
 #include <algorithm>
 using namespace std;
-class Solution
-{
+class Solution {
 private:
-    bool isValid(vector<int> &bloomDay, int day, int m, int size)
-    {
+    bool isValid(vector<int>& bloomDay, int day, int m, int size) {
         int count = 0;
         int curr = 0;
         int n = bloomDay.size();
-        for (int i = 0; i < n; i++)
-        {
-            if (bloomDay[i] <= day)
-            {
+        for (int i = 0; i < n; i++) {
+            if (bloomDay[i] <= day) {
                 curr++;
-                if (curr == size)
-                {
+                if (curr == size) {
                     count++;
                     curr = 0;
                     if (count == m)
                         return true;
                 }
-            }
-            else
+            } else
                 curr = 0;
         }
         return false;
     }
 
 public:
-    int minDays(vector<int> &bloomDay, int m, int k)
-    {
-        if (m * k > bloomDay.size())
+    int minDays(vector<int>& bloomDay, int n, int k) {
+        if (n * 1LL * k > bloomDay.size())
             return -1;
         int l = *min_element(bloomDay.begin(), bloomDay.end());
         int r = *max_element(bloomDay.begin(), bloomDay.end());
-        for (int i = l; i <= r; i++)
-        {
-            if (isValid(bloomDay, i, m, k))
-                return i;
+        while (l <= r) {
+            int m = (l + r) / 2;
+            if (isValid(bloomDay, m, n, k)) {
+                r = m - 1;
+            } else
+                l = m + 1;
         }
-        return -1; // dummy statement
+        return l;
     }
 };
