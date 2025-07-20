@@ -11,7 +11,7 @@ int kthElement(vector<int> &a, vector<int>& b,int k) {
     //apply binary search:
     int low = max(0, k - n), high = min(k, m);
     while (low <= high) {
-        int mid1 = (low + high) >> 1;
+        int mid1 = (low + high) / 2 ;
         int mid2 = left - mid1;
         //calculate l1, l2, r1 and r2;
         int l1 = INT_MIN, l2 = INT_MIN;
