@@ -15,7 +15,7 @@ public:
                 l = hashMap[s[r]] + 1;                           // move left pointer to one step ahead of current character previous occurance
             }
             hashMap[s[r]] = r;                                  // update char latest position
-            maxLen = max(maxLen, r - l + 1);                    //update max length
+            maxLen = max(maxLen, r - l + 1);         //update max length
             r++;
         }
 

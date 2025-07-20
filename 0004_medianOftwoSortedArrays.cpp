@@ -6,15 +6,15 @@ using namespace std;
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& a, vector<int>& b) {
-        int n1 = a.size(), n2 = b.size();
         
-        if (n1 > n2)
-            return findMedianSortedArrays(b, a);
+        if (a.size() > b.size())
+            return findMedianSortedArrays(b, a);      // a is smaller array
+         int n1 = a.size(), n2 = b.size();
 
         int n = n1 + n2;              // total length
-        int left = (n1 + n2 + 1) / 2; // length of left half 
+        int left = (n1 + n2 + 1) / 2; // size of left half  whereas adding 1 means if total length is odd, it would add to 1 so middle element is added to left half
         
-        int low = 0, high = n1;
+        int low = 0, high = n1;   //we can take a either 0 or all elements form smaller array.
         while (low <= high) {
             int mid1 = (low + high) /2;
             int mid2 = left - mid1;
@@ -43,6 +43,6 @@ public:
             else
                 low = mid1 + 1;
         }
-        return 0; // dummy statement
+        return -1; // dummy statement
     }
 };
