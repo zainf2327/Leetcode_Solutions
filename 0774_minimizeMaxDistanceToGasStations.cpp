@@ -1,35 +1,31 @@
-# include <vector>
+#include <vector>
+#include <queue>
 using namespace std;
 
-class Solution {
-  public:
-    double findSmallestMaxDist(vector<int> &stations, int k) {
-        // Code here
-        int n=stations.size();
-        int howManyPlaced[n-1]={0};
-        
-        for(int i=1;i<=k;i++)   {
-            int maxSectionLength=0;
-            int maxSectionIndex=-1;
-            for(int j=0;j<n-1;j++)  {
-                int diff=stations[j+1]-stations[j];
-                double sectionLength=(double) diff/(1+howManyPlaced[j]);
-                if(sectionLength>maxSectionLength)  {
-                    maxSectionLength=sectionLength;
-                    maxSectionIndex=j;
-                }
-            }
-            
-            howManyPlaced[maxSectionIndex]++;
+class Solution  {
+public:
+    double findSmallestMaxDist(vector<int> &arr, int k) {
+        int n = arr.size(); // size of array.
+        int howManyPlaced[n - 1] = {0};
+        priority_queue<pair<double, int>> pq;               // max heap by default
+                                                        // pair here is { sectionLength,sectionIndex}
+
+        for (int i = 0; i < n - 1; i++)     {
+            pq.push({arr[i + 1] - arr[i], i});              // heapfying the heap with all the sections
         }
-        double maxDistance=0;
-        
-    
-        for(int j=0;j<n-1;j++)  {
-                int diff=stations[j+1]-stations[j];
-                double sectionLength=(double) diff/(1+howManyPlaced[j]);
-                maxDistance=max(maxDistance,sectionLength);
+
+        for (int j = 1; j <= k; j++)    {
+            auto tp = pq.top();
+            pq.pop();
+
+            int index = tp.second;
+            howManyPlaced[index]++;
+
+            int diff = arr[index + 1] - arr[index];
+            double sectionLength = (double)diff / (howManyPlaced[index] + 1);
+            pq.push({sectionLength, index});
         }
-        return maxDistance;
+
+        return pq.top().first;
     }
 };
