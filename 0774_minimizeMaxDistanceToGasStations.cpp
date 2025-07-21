@@ -1,31 +1,43 @@
 #include <vector>
-#include <queue>
+#include <cmath>
+#include <algorithm>
 using namespace std;
 
 class Solution  {
+private:
+
+int numberOfGasStationsRequired(double maxAllowedDist, const vector<int>& stationPositions) {
+    int additionalStations = 0;
+    // Iterate over each consecutive pair of existing gas stations
+    for (int i = 1; i < stationPositions.size(); i++) {
+        // Calculate the gap between the current station and the previous one
+         double gap = stationPositions[i] - stationPositions[i - 1];
+         
+         int numSegments=ceil(gap / maxAllowedDist);  // how many segments are required b/w two stations having dis at most maxAllowedDist
+         int  numStations = numSegments-1;          
+        additionalStations += numStations;
+    }
+
+    return additionalStations;
+}
+
 public:
     double findSmallestMaxDist(vector<int> &arr, int k) {
-        int n = arr.size(); // size of array.
-        int howManyPlaced[n - 1] = {0};
-        priority_queue<pair<double, int>> pq;               // max heap by default
-                                                        // pair here is { sectionLength,sectionIndex}
-
-        for (int i = 0; i < n - 1; i++)     {
-            pq.push({arr[i + 1] - arr[i], i});              // heapfying the heap with all the sections
+        double l=0;
+        double h=0;
+        for(int i=1;i<arr.size();i++)   {
+            double dis=arr[i]-arr[i-1];
+            h=max(h,dis);
         }
-
-        for (int j = 1; j <= k; j++)    {
-            auto tp = pq.top();
-            pq.pop();
-
-            int index = tp.second;
-            howManyPlaced[index]++;
-
-            int diff = arr[index + 1] - arr[index];
-            double sectionLength = (double)diff / (howManyPlaced[index] + 1);
-            pq.push({sectionLength, index});
+        double epi =1e-6;
+        while(h-l>epi)  {
+            double m=(l+h)/2.0;
+            if(numberOfGasStationsRequired(m,arr)<=k)   {     // false,false,false .......true
+                h=m;
+            }
+            else l=m;
         }
-
-        return pq.top().first;
+        return h;
+      
     }
 };
