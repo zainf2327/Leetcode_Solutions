@@ -27,10 +27,13 @@ public:
             l=min(l,matrix[i][0]);
             r=max(r,matrix[i][m-1]);
         }
-
-        for(int i=l;i<=r;i++)   {
-            if(isValid(matrix,place,i)) return i;
+         while(l<=r) {
+            int m=l+(r-l)/2;
+            if(isValid(matrix,place,m)) {
+                r=m-1;
+            }
+            else l=m+1;
         }
-        return -1;
+        return l;
     }
 };
