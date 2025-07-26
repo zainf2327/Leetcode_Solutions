@@ -1,14 +1,22 @@
 #include <vector>
+#include <queue>
 using namespace std;
 
 class Solution {
-    void dfs(int node, vector<vector<int>>& matrix, vector<bool>& visited) {
+    void bfs(int node, vector<vector<int>>& matrix, vector<bool>& visited) {
+        queue<int> q;
+        q.push(node);
         visited[node] = true;
         int n = matrix.size();
-        for (int i = 0; i < n; i++) {
-            if (matrix[node][i] && !visited[i]) {
-                dfs(i, matrix, visited);
-            }
+        while(!q.empty()) {
+            int curr=q.front();
+            q.pop();
+            for (int i = 0; i < n; i++) {
+                if (matrix[curr][i] && !visited[i]) {
+                    q.push(i);
+                    visited[i]=true;
+                }
+             }
         }
     }
 
@@ -19,14 +27,13 @@ public:
         int count = 0;
         for (int i = 0; i < n; i++) {
             if (!visited[i]) {
-                dfs(i, isConnected, visited);
+                bfs(i, isConnected, visited);
                 count++;
             }
         }
         return count;
     }
 };
-
 
 // TC: O(n + n*n)
 // SC: O(n+n)
