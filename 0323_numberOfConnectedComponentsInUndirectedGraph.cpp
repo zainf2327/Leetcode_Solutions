@@ -1,28 +1,21 @@
 #include<vector>
-#include <queue>
 using namespace std;
 
 
 class Solution {
 private:
-void bfs(int node, vector<vector<int>>& list,vector<bool>&visited)  {
-    queue <int>q;
-    q.push(node);
+void dfs(int node, vector<vector<int>>& list,vector<bool>&visited)  {
     visited[node]=true;
-    while(!q.empty()) {
-        int curr=q.front();
-        q.pop();
-        for(int neighbour: list[curr])   {
-            if(!visited[neighbour]) {
-                q.push(neighbour);
-                visited[neighbour]=true;
-            }
+    for(int nei: list[node])    {
+        if(!visited[nei]){
+            dfs(nei,list,visited);
         }
+        
     }
 }
 public:
     int countComponents(int n, vector<vector<int>>& edges) {
-        //let's do bfs baby
+        //let's do dfs baby 
         vector<vector<int>> list(n);
         for(auto& edge:edges) {
             int n1=edge[0];
@@ -34,7 +27,7 @@ public:
         vector<bool>visited(n,false);
         for(int i=0;i<n;i++)    {
             if(!visited[i]) {
-                bfs(i,list,visited);
+                dfs(i,list,visited);
                 count++;
             }
         }
@@ -43,6 +36,5 @@ public:
     }
 };
 
-
-// TC: O(V+2E(total degree))
-// SC : O(N+N+N)
+// TC: O(V+2E(Total degree))
+// SC: O(N+N+N)
