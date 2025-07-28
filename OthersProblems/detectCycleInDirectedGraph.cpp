@@ -3,26 +3,18 @@
 using namespace std;
 
 class Solution {
-    bool detectCycle(vector<vector<int>>& adj, vector<bool>& visited, int node) {
-        queue<pair<int, int>> q;  // node, parent
-        q.push({node, -1});
-        visited[node] = true;
-
-        while (!q.empty()) {
-            int curr = q.front().first;
-            int par = q.front().second;
-            q.pop();
-
-            for (auto nei : adj[curr]) {
-                if (!visited[nei]) {
-                    visited[nei] = true;
-                    q.push({nei, curr});
-                } else if (nei != par) {
-                    return true;  // Cycle found
-                }
+     bool detectCycleWithDFS(vector<vector<int>>& adj, vector<bool>& visited, int curr,int parent) {
+        visited[curr] = true;
+        for(auto nei: adj[curr]) {
+            if(!visited[nei]) {
+                if(detectCycleWithDFS(adj,visited,nei,curr)) return true;
+            }
+            else {
+                if(parent!=nei) return true;
             }
         }
         return false;
+        
     }
 
 public:
@@ -36,10 +28,14 @@ public:
         vector<bool>visited(V,false);
         for (int i = 0; i < V; i++) {
             if (!visited[i]) {
-                if (detectCycle(adj, visited, i))
+                if (detectCycleWithDFS(adj, visited, i,-1))
                     return true;
             }
         }
         return false;
     }
 };
+
+
+// TC: O(N+N+2E)     // 2E means total degree of undirected graph
+// SC: O(N+N+(N+2E))
