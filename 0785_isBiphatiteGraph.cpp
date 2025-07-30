@@ -33,3 +33,5 @@ public:
 
 // O(V+V+E)
 // O(V+V)
+// acylic graph or graph having cycle containg even number of nodes is biphatite
+// graph having cylce containing odd number of nodes is not biphatite
