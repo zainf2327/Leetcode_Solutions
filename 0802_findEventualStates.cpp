@@ -1,13 +1,12 @@
 #include <vector>
-#include <algorithm>
 using namespace std;
+
 class Solution {
-    bool dfs(int node, vector<vector<int>>& graph, vector<int>& state,
-             vector<int>& ans) {
+    bool dfs (int node, vector<vector<int>>& graph, vector<int>& state, vector<bool>& isSafe) {
         state[node] = 1;
         for (int nei : graph[node]) {
             if (state[nei] == 0) {
-                if (!dfs(nei, graph, state, ans)) {
+                if (!dfs(nei, graph, state, isSafe)) {
                     state[node] = 2;
                     return false;
                 }
@@ -17,7 +16,7 @@ class Solution {
             }
         }
         state[node] = 3;
-        ans.push_back(node);
+        isSafe[node] = true;
         return true;
     }
 
@@ -27,17 +26,21 @@ public:
         vector<int> state(
             nodes, 0); // 0 means unvisted,1 means in visited, 2 means visited
                        // and unsafe node ,3 means visited and safe node
-        vector<int> ans;
+        vector<bool> isSafe(nodes, false);
         for (int i = 0; i < nodes; i++) {
             if (state[i] == 0) {
-                dfs(i, graph, state, ans);
+                dfs(i, graph, state, isSafe);
             }
         }
-        sort(ans.begin(), ans.end());
+        vector<int> ans;                   // we could have checked through state array as well which nodes are safe if their state is 3
+                                
+        for (int i = 0; i < nodes; i++) {
+            if (isSafe[i])
+                ans.push_back(i);
+        }
         return ans;
     }
 };
 
-
-// TC:O(N+E+Nlogn)
-// SC: O(N+N+N)
+// TC:O(N+E+N)
+// SC: O(N+N+N+N)
