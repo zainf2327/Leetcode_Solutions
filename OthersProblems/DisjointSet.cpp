@@ -19,6 +19,9 @@ int find(int n) {        // finds the representative of set(root of tree )
     if(parent[n]==n) return n;
     return parent[n]=find(parent[n]);   // path optimization
 }
+bool isLeader(int node)    {
+    return parent[node]=node;
+}
 bool unionByRank(int u,int v) {     // merge two sets (trees) ,return true otherwise false if they already belong to same set indicating cycle
     int pa=find(u);
     int pb=find(v);
