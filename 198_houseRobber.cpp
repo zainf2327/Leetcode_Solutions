@@ -1,6 +1,6 @@
 #include <vector>
 using namespace std;
-//Memoization
+
 class Solution {
 int maxMoney(int i,vector<int>& nums,vector<int>&dp) {
     if(i==0) return nums[0];
@@ -14,9 +14,14 @@ int maxMoney(int i,vector<int>& nums,vector<int>&dp) {
 public:
     int rob(vector<int>& nums) {
         int n=nums.size();
-        vector<int>dp(n,-1);
-        dp[0]=nums[0];
-        return maxMoney(nums.size()-1,nums,dp);
+        int last2=0;
+        int last1=0;
+        for(int i=0;i<n;i++)    {
+            int curr=max(nums[i]+last2,last1);
+            last2=last1;
+            last1=curr;
+        }
+        return last1;
         
     }
 };
