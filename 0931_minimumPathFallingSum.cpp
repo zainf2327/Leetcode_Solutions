@@ -17,7 +17,7 @@ public:
             }
             curr[n-1]=matrix[i][n-1]+min(dp[n-1],dp[n-2]);    // Last column
             dp=curr;
-        }
+        } 
         int ans=dp[0];
         for(int j=1;j<n;j++)    {
             ans=min(ans,dp[j]);
